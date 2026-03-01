@@ -1,0 +1,184 @@
+<!-- frontend/services.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Copy styles from index.html and add these */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .filters {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .services-grid {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Same navigation as index.html -->
+
+    <div class="page-header">
+        <h1><i class="fas fa-concierge-bell"></i> Our Services</h1>
+        <p>Choose from our wide range of professional cleaning services</p>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterServices('all')">
+            <i class="fas fa-list"></i> All Services
+        </button>
+        <button class="filter-btn" onclick="filterServices('home')">
+            <i class="fas fa-home"></i> Home Cleaning
+        </button>
+        <button class="filter-btn" onclick="filterServices('office')">
+            <i class="fas fa-building"></i> Office Cleaning
+        </button>
+        <button class="filter-btn" onclick="filterServices('school')">
+            <i class="fas fa-school"></i> School Cleaning
+        </button>
+    </div>
+
+    <div class="services-grid" id="servicesGrid">
+        <div class="loading" style="text-align: center; grid-column: 1/-1;">
+            <div class="spinner"></div>
+            <p>Loading amazing services...</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let allServices = [];
+
+        async function loadServices() {
+            try {
+                const response = await fetch(`${API_URL}/services`);
+                allServices = await response.json();
+                displayServices(allServices);
+            } catch (error) {
+                document.getElementById('servicesGrid').innerHTML = `
+                    <div style="text-align: center; grid-column: 1/-1; padding: 3rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #e74c3c;"></i>
+                        <p style="color: #e74c3c;">Error loading services</p>
+                    </div>
+                `;
+            }
+        }
+
+        function displayServices(services) {
+            const grid = document.getElementById('servicesGrid');
+            
+            if (services.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No services found</p>';
+                return;
+            }
+
+            const icons = {
+                'home': 'fa-home',
+                'office': 'fa-building',
+                'school': 'fa-school'
+            };
+
+            grid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <div class="service-badge">
+                        <i class="fas fa-star"></i> Popular
+                    </div>
+                    <div class="service-icon">
+                        <i class="fas ${icons[service.type] || 'fa-broom'}"></i>
+                    </div>
+                    <h3>${service.name}</h3>
+                    <p>${service.description || 'Professional cleaning service'}</p>
+                    <div class="service-price">
+                        $${service.basePrice} <small>/${service.priceUnit || 'session'}</small>
+                    </div>
+                    <div class="service-duration">
+                        <i class="fas fa-clock"></i> ${service.estimatedDuration || 2} hours
+                    </div>
+                    <button class="btn-service" onclick="bookService(${service.id})">
+                        <i class="fas fa-calendar-check"></i> Book Now
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterServices(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'all') {
+                displayServices(allServices);
+            } else {
+                const filtered = allServices.filter(s => s.type === type);
+                displayServices(filtered);
+            }
+        }
+
+        function bookService(serviceId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = `login.html?redirect=booking.html&service=${serviceId}`;
+            } else {
+                window.location.href = `booking.html?service=${serviceId}`;
+            }
+        }
+
+        loadServices();
+    </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!-- frontend/admin/reports.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Copy navigation styles from dashboard.html */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        .navbar { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #27ae60; text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+        .admin-badge { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 50px; margin-left: 0.5rem; }
+        .mobile-menu-btn { display: block; background: none; border: none; padding: 12px; cursor: pointer; min-width: 48px; min-height: 48px; }
+        .mobile-menu-btn span { display: block; width: 28px; height: 3px; background: #2c3e50; margin: 5px 0; transition: 0.3s; border-radius: 3px; }
+        .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); list-style: none; }
+        .nav-menu.active { display: block; }
+        .nav-menu li { margin: 0.5rem 0; }
+        .nav-menu a { display: flex; align-items: center; gap: 1rem; padding: 1rem; color: #333; text-decoration: none; font-size: 1.1rem; border-radius: 8px; min-height: 48px; }
+        .nav-menu a:hover, .nav-menu a.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .logout-btn { background: #e74c3c; color: white !important; }
+
+        .container { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .page-header { color: white; margin-bottom: 1.5rem; }
+        .page-header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .date-range { background: white; border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+        .date-range input { padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 8px; }
+        .btn-primary { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .report-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .report-header h3 i {
+            color: #667eea;
+        }
+
+        .chart-container {
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .stats-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-mini {
+            text-align: center;
+        }
+
+        .stat-mini .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .stat-mini .label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .btn-export:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn { display: none; }
+            .nav-menu { display: flex !important; position: static; background: none; box-shadow: none; padding: 0; gap: 1rem; }
+            .container { padding: 2rem; }
+            .reports-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-broom"></i> Safi Shanasi
+                <span class="admin-badge">Admin</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuToggle"><span></span><span></span><span></span></button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="cleaners.html"><i class="fas fa-user-tie"></i> Cleaners</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="reports.html" class="active"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-chart-bar"></i> Reports & Analytics</h1>
+        </div>
+
+        <div class="date-range">
+            <input type="date" id="startDate" value="2024-02-01">
+            <span>to</span>
+            <input type="date" id="endDate" value="2024-02-28">
+            <button class="btn-primary" onclick="applyDateRange()"><i class="fas fa-filter"></i> Apply</button>
+            <button class="btn-primary" style="background: #27ae60;" onclick="downloadReport()"><i class="fas fa-download"></i> Download</button>
+        </div>
+
+        <div class="reports-grid">
+            <!-- Revenue Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3><i class="fas fa-dollar-sign"></i> Revenue Overview</h3>
+                    <span>This Month</span>
+                </div>
+                <div class="chart-container">
+                    [Revenue Chart - $12,450]
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="value">$12,450</div>
+                        <div class="label">Total Revenue</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">234</div>
+                        <div class="label">Bookings</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">$53</div>
+                        <div class="label">Avg/Booking</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3><i class="fas fa-calendar-check"></i> Bookings Status</h3>
+                    <span>Distribution</span>
+                </div>
+                <div class="chart-container">
+                    [Pie Chart: 45% Completed, 30% Pending, 25% Accepted]
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="value">105</div>
+                        <div class="label">Completed</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">70</div>
+                        <div class="label">Pending</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">59</div>
+                        <div class="label">Accepted</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3><i class="fas fa-users"></i> User Growth</h3>
+                    <span>Last 30 days</span>
+                </div>
+                <div class="chart-container">
+                    [Line Chart: User Growth]
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="value">156</div>
+                        <div class="label">Total Users</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">45</div>
+                        <div class="label">Cleaners</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">+23</div>
+                        <div class="label">New this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Report -->
+            <div class="report-card">
+                <div class="report-header">
+                    <h3><i class="fas fa-concierge-bell"></i> Popular Services</h3>
+                    <span>By bookings</span>
+                </div>
+                <div class="chart-container">
+                    [Bar Chart: Home 45%, Office 30%, School 25%]
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-mini">
+                        <div class="value">105</div>
+                        <div class="label">Home Cleaning</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">70</div>
+                        <div class="label">Office</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="value">59</div>
+                        <div class="label">School</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-buttons">
+            <button class="btn-export"><i class="fas fa-file-pdf"></i> Export PDF</button>
+            <button class="btn-export"><i class="fas fa-file-excel"></i> Export Excel</button>
+            <button class="btn-export"><i class="fas fa-file-csv"></i> Export CSV</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        function applyDateRange() {
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+            alert(`Apply report from ${start} to ${end}`);
+        }
+
+        function downloadReport() {
+            alert('Downloading report...');
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../login.html';
+        });
+    </script>
+</body>
+</html>

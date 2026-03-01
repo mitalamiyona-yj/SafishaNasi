@@ -1,0 +1,185 @@
+<!-- frontend/admin/users.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Copy navigation styles from dashboard.html */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        /* Navigation styles (same as dashboard) */
+        .navbar { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #27ae60; text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+        .admin-badge { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 50px; margin-left: 0.5rem; }
+        .mobile-menu-btn { display: block; background: none; border: none; padding: 12px; cursor: pointer; min-width: 48px; min-height: 48px; }
+        .mobile-menu-btn span { display: block; width: 28px; height: 3px; background: #2c3e50; margin: 5px 0; transition: 0.3s; border-radius: 3px; }
+        .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); list-style: none; }
+        .nav-menu.active { display: block; }
+        .nav-menu li { margin: 0.5rem 0; }
+        .nav-menu a { display: flex; align-items: center; gap: 1rem; padding: 1rem; color: #333; text-decoration: none; font-size: 1.1rem; border-radius: 8px; min-height: 48px; }
+        .nav-menu a:hover, .nav-menu a.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .nav-menu a i { width: 24px; }
+        .logout-btn { background: #e74c3c; color: white !important; }
+
+        .container { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .page-header { color: white; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .page-header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: white; color: #667eea; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; min-height: 48px; }
+
+        /* Filters */
+        .filters { background: white; border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        .search-box { flex: 1; display: flex; align-items: center; gap: 0.5rem; background: #f8f9fa; padding: 0 1rem; border-radius: 8px; min-width: 200px; }
+        .search-box i { color: #667eea; }
+        .search-box input { flex: 1; padding: 0.8rem 0; border: none; background: none; outline: none; }
+        .filter-select { padding: 0.8rem; border: 1px solid #e0e0e0; border-radius: 8px; outline: none; min-width: 150px; }
+
+        /* Table */
+        .table-container { background: white; border-radius: 16px; overflow-x: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { background: #f8f9fa; padding: 1rem; text-align: left; font-weight: 600; color: #2c3e50; }
+        td { padding: 1rem; border-bottom: 1px solid #eee; }
+        .user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
+        .role-badge { padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+        .role-customer { background: #e3f2fd; color: #1976d2; }
+        .role-cleaner { background: #e8f5e8; color: #27ae60; }
+        .role-admin { background: #f3e5f5; color: #8e24aa; }
+        .status-active { color: #27ae60; }
+        .status-inactive { color: #e74c3c; }
+        .btn-icon { padding: 0.5rem; border: none; background: none; cursor: pointer; font-size: 1rem; min-width: 36px; min-height: 36px; border-radius: 8px; }
+        .btn-icon:hover { background: #f0f0f0; }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn { display: none; }
+            .nav-menu { display: flex !important; position: static; background: none; box-shadow: none; padding: 0; gap: 1rem; }
+            .container { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-broom"></i> Safi Shanasi
+                <span class="admin-badge">Admin</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuToggle"><span></span><span></span><span></span></button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="users.html" class="active"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="cleaners.html"><i class="fas fa-user-tie"></i> Cleaners</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-users"></i> Manage Users</h1>
+            <button class="btn-primary"><i class="fas fa-plus"></i> Add User</button>
+        </div>
+
+        <div class="filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search users...">
+            </div>
+            <select class="filter-select">
+                <option>All Roles</option>
+                <option>Customers</option>
+                <option>Cleaners</option>
+                <option>Admins</option>
+            </select>
+            <select class="filter-select">
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem;">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // Mock data - replace with API calls
+        const users = [
+            { id: 1, name: 'John Customer', email: 'john@email.com', phone: '+255 123 456 789', role: 'customer', status: 'active', joined: '2024-01-15' },
+            { id: 2, name: 'Mary Cleaner', email: 'mary@email.com', phone: '+255 987 654 321', role: 'cleaner', status: 'active', joined: '2024-01-20' },
+            { id: 3, name: 'Admin User', email: 'admin@email.com', phone: '+255 555 555 555', role: 'admin', status: 'active', joined: '2024-01-01' },
+            { id: 4, name: 'Sarah Smith', email: 'sarah@email.com', phone: '+255 222 333 444', role: 'customer', status: 'inactive', joined: '2024-02-01' },
+        ];
+
+        function loadUsers() {
+            const tbody = document.getElementById('usersTable');
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="user-avatar"><i class="fas fa-user"></i></div>
+                            <span>${user.name}</span>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td><span class="role-badge role-${user.role}">${user.role}</span></td>
+                    <td><i class="fas fa-circle status-${user.status}"></i> ${user.status}</td>
+                    <td>${user.joined}</td>
+                    <td>
+                        <button class="btn-icon" onclick="editUser(${user.id})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon" onclick="toggleUserStatus(${user.id})">
+                            <i class="fas ${user.status === 'active' ? 'fa-ban' : 'fa-check'}"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function editUser(id) {
+            alert(`Edit user ${id}`);
+        }
+
+        function toggleUserStatus(id) {
+            alert(`Toggle status for user ${id}`);
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../login.html';
+        });
+
+        loadUsers();
+    </script>
+</body>
+</html>

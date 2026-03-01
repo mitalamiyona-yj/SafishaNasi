@@ -1,0 +1,489 @@
+<!-- frontend/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-home {
+            margin-bottom: 1.5rem;
+        }
+
+        .back-home a {
+            color: #667eea;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .back-home a:hover {
+            transform: translateX(-5px);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h2 {
+            margin-top: 0.5rem;
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: #f0f0f0;
+            padding: 0.3rem;
+            border-radius: 50px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .role-tab i {
+            font-size: 1rem;
+        }
+
+        .role-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #e74c3c;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            color: #667eea;
+        }
+
+        .test-accounts {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .test-accounts p {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .test-accounts small {
+            display: block;
+            color: #666;
+            margin: 0.3rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0.3rem;
+            border-radius: 5px;
+        }
+
+        .test-accounts small:hover {
+            background: #e0e0e0;
+            color: #667eea;
+        }
+
+        .test-accounts i {
+            color: #667eea;
+            width: 20px;
+        }
+
+        .connection-status {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .connection-status.online {
+            color: #27ae60;
+        }
+
+        .connection-status.offline {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="back-home">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+
+        <div class="logo">
+            <i class="fas fa-broom"></i>
+            <h2>Welcome Back!</h2>
+        </div>
+
+        <!-- Role Tabs -->
+        <div class="role-tabs">
+            <div class="role-tab active" onclick="selectRole('customer')">
+                <i class="fas fa-user"></i> Customer
+            </div>
+            <div class="role-tab" onclick="selectRole('cleaner')">
+                <i class="fas fa-user-tie"></i> Cleaner
+            </div>
+            <div class="role-tab" onclick="selectRole('admin')">
+                <i class="fas fa-user-cog"></i> Admin
+            </div>
+        </div>
+
+        <div id="errorDisplay" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email address" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+
+        <div class="links">
+            <a href="register.html"><i class="fas fa-user-plus"></i> Create Account</a>
+            <a href="#"><i class="fas fa-question-circle"></i> Forgot Password?</a>
+        </div>
+
+        <div class="test-accounts">
+            <p><i class="fas fa-info-circle"></i> Quick Login (Click to fill)</p>
+            <small onclick="fillLogin('admin@safishanasi.com', 'password123')">
+                <i class="fas fa-user-cog"></i> Admin: admin@safishanasi.com
+            </small>
+            <small onclick="fillLogin('john@example.com', 'password123')">
+                <i class="fas fa-user"></i> Customer: john@example.com
+            </small>
+            <small onclick="fillLogin('mary@example.com', 'password123')">
+                <i class="fas fa-user-tie"></i> Cleaner: mary@example.com
+            </small>
+            <small><i class="fas fa-key"></i> Password: password123 (wote)</small>
+        </div>
+
+        <div id="connectionStatus" class="connection-status offline">
+            <i class="fas fa-circle"></i> Checking connection...
+        </div>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        const API_URL = 'http://localhost:5000/api';
+        let selectedRole = 'customer';
+
+        // ===== SELECT ROLE FUNCTION =====
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Fill demo email based on role
+            if (role === 'admin') {
+                document.getElementById('email').value = 'admin@safishanasi.com';
+            } else if (role === 'cleaner') {
+                document.getElementById('email').value = 'mary@example.com';
+            } else {
+                document.getElementById('email').value = 'john@example.com';
+            }
+            document.getElementById('password').value = 'password123';
+        }
+
+        // ===== FILL LOGIN FUNCTION =====
+        function fillLogin(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            
+            // Auto select role based on email
+            if (email.includes('admin')) {
+                selectRole('admin');
+            } else if (email.includes('mary')) {
+                selectRole('cleaner');
+            } else {
+                selectRole('customer');
+            }
+        }
+
+        // ===== CHECK BACKEND CONNECTION =====
+        async function checkBackendConnection() {
+            const statusDiv = document.getElementById('connectionStatus');
+            try {
+                const response = await fetch('http://localhost:5000/', {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = '<i class="fas fa-circle"></i> ✅ Backend Connected';
+                    statusDiv.className = 'connection-status online';
+                    return true;
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<i class="fas fa-circle"></i> ❌ Backend Offline - Start XAMPP and Node server';
+                statusDiv.className = 'connection-status offline';
+                return false;
+            }
+        }
+
+        // ===== LOGIN FORM SUBMIT =====
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorDisplay = document.getElementById('errorDisplay');
+            const errorText = document.getElementById('errorText');
+
+            // Basic validation
+            if (!email || !password) {
+                errorDisplay.style.display = 'flex';
+                errorText.textContent = 'Please fill in all fields';
+                return;
+            }
+
+            // Disable button
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            try {
+                console.log('📡 Sending login request to:', `${API_URL}/auth/login`);
+                console.log('📡 Email:', email);
+                
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password }),
+                    mode: 'cors'
+                });
+
+                console.log('📡 Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('📡 Response data:', data);
+
+                if (!response.ok) {
+                    throw new Error(data.msg || 'Login failed');
+                }
+
+                // Save to localStorage
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Hide error
+                errorDisplay.style.display = 'none';
+                
+                // Show success message
+                alert(`✅ Login successful! Redirecting to ${data.user.role} dashboard...`);
+
+                // Redirect based on role
+                setTimeout(() => {
+                    if (data.user.role === 'admin') {
+                        window.location.href = 'admin/dashboard.html';
+                    } else if (data.user.role === 'cleaner') {
+                        window.location.href = 'cleaner/dashboard.html';
+                    } else {
+                        window.location.href = 'customer/dashboard.html';
+                    }
+                }, 1500);
+
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                
+                // Special handling for "Failed to fetch"
+                if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                    errorDisplay.style.display = 'flex';
+                    errorText.innerHTML = `
+                        <strong>Cannot connect to server!</strong><br>
+                        Please make sure:<br>
+                        1. XAMPP is running (MySQL)<br>
+                        2. Backend server is running (npm run dev)<br>
+                        3. Server is on port 5000
+                    `;
+                } else {
+                    errorDisplay.style.display = 'flex';
+                    errorText.textContent = error.message;
+                }
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            }
+        });
+
+        // ===== CHECK CONNECTION ON LOAD =====
+        document.addEventListener('DOMContentLoaded', () => {
+            checkBackendConnection();
+            // Set default customer email
+            document.getElementById('email').value = 'john@example.com';
+            document.getElementById('password').value = 'password123';
+        });
+
+        // ===== CHECK CONNECTION EVERY 10 SECONDS =====
+        setInterval(checkBackendConnection, 10000);
+    </script>
+</body>
+</html>

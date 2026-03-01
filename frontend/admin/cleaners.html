@@ -1,0 +1,203 @@
+<!-- frontend/admin/cleaners.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Cleaners - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Copy navigation styles from dashboard.html */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        /* Navigation styles (same as dashboard) */
+        .navbar { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #27ae60; text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+        .admin-badge { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 50px; margin-left: 0.5rem; }
+        .mobile-menu-btn { display: block; background: none; border: none; padding: 12px; cursor: pointer; min-width: 48px; min-height: 48px; }
+        .mobile-menu-btn span { display: block; width: 28px; height: 3px; background: #2c3e50; margin: 5px 0; transition: 0.3s; border-radius: 3px; }
+        .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); list-style: none; }
+        .nav-menu.active { display: block; }
+        .nav-menu li { margin: 0.5rem 0; }
+        .nav-menu a { display: flex; align-items: center; gap: 1rem; padding: 1rem; color: #333; text-decoration: none; font-size: 1.1rem; border-radius: 8px; min-height: 48px; }
+        .nav-menu a:hover, .nav-menu a.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .nav-menu a i { width: 24px; }
+        .logout-btn { background: #e74c3c; color: white !important; }
+
+        .container { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .page-header { color: white; margin-bottom: 1.5rem; }
+        .page-header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .tab { background: white; padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+
+        .cleaners-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        .cleaner-card { background: white; border-radius: 16px; padding: 1.5rem; display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .cleaner-avatar { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
+        .cleaner-info h3 { margin-bottom: 0.3rem; }
+        .cleaner-info p { color: #666; font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .cleaner-info p i { width: 20px; color: #667eea; }
+        .doc-badge { display: inline-block; padding: 0.2rem 0.5rem; background: #e8f5e8; color: #27ae60; border-radius: 50px; font-size: 0.8rem; margin-right: 0.3rem; }
+        .doc-badge i { margin-right: 0.2rem; }
+        .status-pending { color: #f39c12; font-weight: 600; }
+        .status-approved { color: #27ae60; font-weight: 600; }
+        .action-buttons { display: flex; gap: 0.5rem; }
+        .btn-approve { background: #27ae60; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+        .btn-reject { background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+        .btn-view { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn { display: none; }
+            .nav-menu { display: flex !important; position: static; background: none; box-shadow: none; padding: 0; gap: 1rem; }
+            .container { padding: 2rem; }
+            .cleaners-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .cleaners-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-broom"></i> Safi Shanasi
+                <span class="admin-badge">Admin</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuToggle"><span></span><span></span><span></span></button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="cleaners.html" class="active"><i class="fas fa-user-tie"></i> Cleaners</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-user-tie"></i> Manage Cleaners</h1>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="filterCleaners('all')"><i class="fas fa-list"></i> All (24)</div>
+            <div class="tab" onclick="filterCleaners('pending')"><i class="fas fa-clock"></i> Pending (5)</div>
+            <div class="tab" onclick="filterCleaners('approved')"><i class="fas fa-check-circle"></i> Approved (19)</div>
+        </div>
+
+        <div class="cleaners-grid" id="cleanersGrid">
+            <!-- Cleaners will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        const cleaners = [
+            {
+                id: 1,
+                name: 'Mary Cleaner',
+                email: 'mary@email.com',
+                phone: '+255 123 456 789',
+                experience: '3 years',
+                documents: ['CV.pdf', 'Certificate.pdf'],
+                status: 'pending'
+            },
+            {
+                id: 2,
+                name: 'John Doe',
+                email: 'john@email.com',
+                phone: '+255 987 654 321',
+                experience: '5 years',
+                documents: ['CV.pdf'],
+                status: 'pending'
+            },
+            {
+                id: 3,
+                name: 'Sarah Johnson',
+                email: 'sarah@email.com',
+                phone: '+255 555 123 456',
+                experience: '2 years',
+                documents: ['CV.pdf', 'Certificate.pdf', 'License.pdf'],
+                status: 'approved'
+            }
+        ];
+
+        function loadCleaners(filter = 'all') {
+            const grid = document.getElementById('cleanersGrid');
+            const filtered = filter === 'all' ? cleaners : cleaners.filter(c => c.status === filter);
+            
+            grid.innerHTML = filtered.map(cleaner => `
+                <div class="cleaner-card">
+                    <div class="cleaner-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="cleaner-info">
+                        <h3>${cleaner.name}</h3>
+                        <p><i class="fas fa-envelope"></i> ${cleaner.email}</p>
+                        <p><i class="fas fa-phone"></i> ${cleaner.phone}</p>
+                        <p><i class="fas fa-briefcase"></i> ${cleaner.experience}</p>
+                        <div style="margin-top: 0.5rem;">
+                            ${cleaner.documents.map(doc => 
+                                `<span class="doc-badge"><i class="fas fa-file-pdf"></i> ${doc}</span>`
+                            ).join('')}
+                        </div>
+                        <p style="margin-top: 0.5rem;">
+                            Status: <span class="status-${cleaner.status}">${cleaner.status}</span>
+                        </p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-view" onclick="viewCleaner(${cleaner.id})"><i class="fas fa-eye"></i></button>
+                        ${cleaner.status === 'pending' ? `
+                            <button class="btn-approve" onclick="approveCleaner(${cleaner.id})"><i class="fas fa-check"></i></button>
+                            <button class="btn-reject" onclick="rejectCleaner(${cleaner.id})"><i class="fas fa-times"></i></button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCleaners(filter) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            loadCleaners(filter);
+        }
+
+        function viewCleaner(id) {
+            alert(`View cleaner ${id} details`);
+        }
+
+        function approveCleaner(id) {
+            if(confirm('Approve this cleaner?')) {
+                alert('Cleaner approved!');
+                loadCleaners();
+            }
+        }
+
+        function rejectCleaner(id) {
+            if(confirm('Reject this cleaner?')) {
+                alert('Cleaner rejected!');
+                loadCleaners();
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../login.html';
+        });
+
+        loadCleaners();
+    </script>
+</body>
+</html>

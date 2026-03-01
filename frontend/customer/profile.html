@@ -1,0 +1,1481 @@
+<!-- frontend/customer/profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Safi Shanasi</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            color: white;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white !important;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b !important;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h1 i {
+            margin-right: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            border: 4px solid rgba(255,255,255,0.3);
+            font-size: 3rem;
+            color: #667eea;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            border-color: white;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #27ae60;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: all 0.3s;
+        }
+
+        .avatar-upload:hover {
+            background: #219a52;
+            transform: scale(1.1);
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .profile-role i {
+            margin-right: 0.3rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Profile Tabs */
+        .profile-tabs {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            padding: 0 2rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        /* Profile Content */
+        .profile-content {
+            padding: 2rem;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group label i {
+            color: #667eea;
+            margin-right: 0.3rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control[readonly] {
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Password Strength */
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .strength-bar {
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0.3rem;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+
+        .strength-fill.weak {
+            width: 33.33%;
+            background: #e74c3c;
+        }
+
+        .strength-fill.medium {
+            width: 66.66%;
+            background: #f39c12;
+        }
+
+        .strength-fill.strong {
+            width: 100%;
+            background: #27ae60;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Address Cards */
+        .addresses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .address-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .address-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .address-card.default {
+            border-color: #27ae60;
+            background: #f0fff4;
+        }
+
+        .address-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #27ae60;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+        }
+
+        .address-type {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            background: #f0f0f0;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .address-text {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.3rem 0.8rem;
+            background: none;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-icon:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .payment-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .payment-card:hover {
+            border-color: #667eea;
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-info h4 {
+            margin-bottom: 0.2rem;
+        }
+
+        .payment-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .payment-default {
+            padding: 0.2rem 0.8rem;
+            background: #27ae60;
+            color: white;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        /* Notification Settings */
+        .notification-group {
+            margin-bottom: 2rem;
+        }
+
+        .notification-group h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-info h4 {
+            margin-bottom: 0.2rem;
+        }
+
+        .notification-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #27ae60;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Activity Log */
+        .activity-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .activity-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -2.1rem;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #667eea;
+        }
+
+        .activity-date {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 3000;
+            animation: slideIn 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .notification.success {
+            background: #27ae60;
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .notification.info {
+            background: #3498db;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .profile-tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                padding: 1rem;
+                justify-content: center;
+            }
+
+            .profile-stats {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-broom"></i>
+                Safi Shanasi
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="../services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="profile.html" class="active"><i class="fas fa-user-circle"></i> Profile</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1><i class="fas fa-user-circle"></i> My Profile</h1>
+        <p>Manage your account settings and preferences</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="profile-card">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="avatar-upload">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="avatarInput" style="display: none;" accept="image/*">
+                </div>
+                <h2 class="profile-name" id="profileName">Loading...</h2>
+                <span class="profile-role"><i class="fas fa-user"></i> Customer</span>
+                
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="totalBookings">0</div>
+                        <div class="stat-label">Bookings</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="memberSince">2024</div>
+                        <div class="stat-label">Member Since</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="reviewsCount">0</div>
+                        <div class="stat-label">Reviews</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="profile-tabs">
+                <button class="tab-btn active" onclick="switchTab('personal')">
+                    <i class="fas fa-user"></i> Personal Info
+                </button>
+                <button class="tab-btn" onclick="switchTab('security')">
+                    <i class="fas fa-shield-alt"></i> Security
+                </button>
+                <button class="tab-btn" onclick="switchTab('addresses')">
+                    <i class="fas fa-map-marker-alt"></i> Addresses
+                </button>
+                <button class="tab-btn" onclick="switchTab('payments')">
+                    <i class="fas fa-credit-card"></i> Payments
+                </button>
+                <button class="tab-btn" onclick="switchTab('notifications')">
+                    <i class="fas fa-bell"></i> Notifications
+                </button>
+                <button class="tab-btn" onclick="switchTab('activity')">
+                    <i class="fas fa-history"></i> Activity
+                </button>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- Personal Info Tab -->
+                <div class="tab-pane active" id="personal-tab">
+                    <form id="personalForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="Your full name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" class="form-control" id="email" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-phone"></i> Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Your phone number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> Date of Birth</label>
+                                <input type="date" class="form-control" id="dob">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-map-marker-alt"></i> Default Address</label>
+                                <textarea class="form-control" id="defaultAddress" rows="3" placeholder="Your default address"></textarea>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-info-circle"></i> About Me</label>
+                                <textarea class="form-control" id="bio" rows="4" placeholder="Tell us a little about yourself..."></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-outline" onclick="resetPersonalForm()">
+                                <i class="fas fa-undo"></i> Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Security Tab -->
+                <div class="tab-pane" id="security-tab">
+                    <form id="securityForm">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-lock"></i> Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" placeholder="Enter current password">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-key"></i> New Password</label>
+                                <input type="password" class="form-control" id="newPassword" placeholder="Enter new password" onkeyup="checkPasswordStrength()">
+                                <div class="password-strength">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill" id="strengthBar"></div>
+                                    </div>
+                                    <span class="strength-text" id="strengthText">Enter a password</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-check-circle"></i> Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password">
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-mobile-alt"></i> Two-Factor Authentication</label>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
+                                    <div>
+                                        <p style="font-weight: 600; margin-bottom: 0.2rem;">Enable 2FA</p>
+                                        <p style="color: #666; font-size: 0.9rem;">Add an extra layer of security</p>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="enable2FA">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label><i class="fas fa-history"></i> Session Management</label>
+                                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+                                    <p><i class="fas fa-circle" style="color: #27ae60; font-size: 0.5rem;"></i> Current session: This device</p>
+                                    <p><i class="fas fa-circle" style="color: #999; font-size: 0.5rem;"></i> Last login: Today at 10:30 AM</p>
+                                    <button type="button" class="btn btn-outline btn-sm" style="margin-top: 0.5rem;">
+                                        <i class="fas fa-sign-out-alt"></i> Logout All Devices
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-shield-alt"></i> Update Security
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Addresses Tab -->
+                <div class="tab-pane" id="addresses-tab">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3><i class="fas fa-map-marker-alt"></i> Saved Addresses</h3>
+                        <button class="btn btn-primary btn-sm" onclick="addNewAddress()">
+                            <i class="fas fa-plus"></i> Add New Address
+                        </button>
+                    </div>
+                    
+                    <div class="addresses-grid" id="addressesGrid">
+                        <!-- Addresses will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Payments Tab -->
+                <div class="tab-pane" id="payments-tab">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3><i class="fas fa-credit-card"></i> Payment Methods</h3>
+                        <button class="btn btn-primary btn-sm" onclick="addPaymentMethod()">
+                            <i class="fas fa-plus"></i> Add Payment Method
+                        </button>
+                    </div>
+                    
+                    <div class="payment-methods" id="paymentMethods">
+                        <!-- Payment methods will be loaded here -->
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem;"><i class="fas fa-clock"></i> Recent Transactions</h3>
+                    <div class="activity-timeline" id="recentTransactions">
+                        <!-- Transactions will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Notifications Tab -->
+                <div class="tab-pane" id="notifications-tab">
+                    <div class="notification-group">
+                        <h3><i class="fas fa-calendar-check"></i> Booking Notifications</h3>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Booking Confirmation</h4>
+                                <p>Get notified when your booking is confirmed</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyBookingConfirm" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Booking Reminders</h4>
+                                <p>Receive reminders before your scheduled service</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyReminders" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Booking Updates</h4>
+                                <p>Get notified about status changes</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyUpdates" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="notification-group">
+                        <h3><i class="fas fa-star"></i> Review Notifications</h3>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Review Reminders</h4>
+                                <p>Get reminded to leave reviews after service</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyReviewReminder" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Review Responses</h4>
+                                <p>Get notified when cleaners respond to your reviews</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyReviewResponse" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="notification-group">
+                        <h3><i class="fas fa-tag"></i> Promotions</h3>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Special Offers</h4>
+                                <p>Receive promotions and discounts</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyOffers">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <h4>Newsletter</h4>
+                                <p>Get updates about new services</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notifyNewsletter">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="saveNotificationSettings()">
+                            <i class="fas fa-save"></i> Save Preferences
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Activity Tab -->
+                <div class="tab-pane" id="activity-tab">
+                    <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                    <div class="activity-timeline" id="activityTimeline">
+                        <!-- Activity will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Address Modal -->
+    <div class="modal-overlay" id="addressModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Add New Address</h3>
+                <button class="close-modal" onclick="closeAddressModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm">
+                    <div class="form-group">
+                        <label>Address Type</label>
+                        <select class="form-control" id="addressType">
+                            <option value="home">Home</option>
+                            <option value="work">Work</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Street Address</label>
+                        <input type="text" class="form-control" id="streetAddress" placeholder="Street address">
+                    </div>
+                    
+                    <div class="form-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" class="form-control" id="city" placeholder="City">
+                        </div>
+                        <div class="form-group">
+                            <label>State</label>
+                            <input type="text" class="form-control" id="state" placeholder="State">
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP</label>
+                            <input type="text" class="form-control" id="zip" placeholder="ZIP">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="setDefault"> Set as default address
+                        </label>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeAddressModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let userData = null;
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+
+            if (!token || !userStr) {
+                window.location.href = '../login.html';
+                return null;
+            }
+
+            try {
+                const user = JSON.parse(userStr);
+                if (user.role !== 'customer') {
+                    window.location.href = '../index.html';
+                    return null;
+                }
+                return { token, user };
+            } catch {
+                window.location.href = '../login.html';
+                return null;
+            }
+        }
+
+        // Load profile data
+        async function loadProfile() {
+            const auth = checkAuth();
+            if (!auth) return;
+
+            userData = auth.user;
+
+            // Load user data from localStorage first
+            document.getElementById('profileName').textContent = userData.fullName || 'Customer';
+            document.getElementById('fullName').value = userData.fullName || '';
+            document.getElementById('email').value = userData.email || '';
+            document.getElementById('phone').value = userData.phone || '';
+
+            // Set member since (from createdAt or default)
+            const memberYear = userData.createdAt ? new Date(userData.createdAt).getFullYear() : 2024;
+            document.getElementById('memberSince').textContent = memberYear;
+
+            // Load bookings to get stats
+            try {
+                const response = await fetch(`${API_URL}/bookings/my-bookings`, {
+                    headers: { 'x-auth-token': auth.token }
+                });
+
+                if (response.ok) {
+                    const bookings = await response.json();
+                    document.getElementById('totalBookings').textContent = bookings.length;
+                    
+                    // Calculate reviews count (you can implement this)
+                    document.getElementById('reviewsCount').textContent = bookings.filter(b => b.reviewed).length || 0;
+                }
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+
+            // Load addresses (mock data for now)
+            loadAddresses();
+            
+            // Load payment methods (mock data)
+            loadPaymentMethods();
+            
+            // Load activity (mock data)
+            loadActivity();
+            
+            // Load transactions (mock data)
+            loadTransactions();
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Password strength checker
+        function checkPasswordStrength() {
+            const password = document.getElementById('newPassword').value;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+
+            if (!password) {
+                strengthBar.className = 'strength-fill';
+                strengthText.textContent = 'Enter a password';
+                return;
+            }
+
+            let strength = 0;
+            
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/)) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            strengthBar.className = 'strength-fill';
+            
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+            } else if (strength <= 4) {
+                strengthBar.classList.add('medium');
+                strengthText.textContent = 'Medium password';
+            } else {
+                strengthBar.classList.add('strong');
+                strengthText.textContent = 'Strong password';
+            }
+        }
+
+        // Load addresses (mock data)
+        function loadAddresses() {
+            const addresses = [
+                {
+                    id: 1,
+                    type: 'home',
+                    street: '123 Main Street',
+                    city: 'Dar es Salaam',
+                    state: 'Kinondoni',
+                    zip: '14111',
+                    isDefault: true
+                },
+                {
+                    id: 2,
+                    type: 'work',
+                    street: '456 Office Road',
+                    city: 'Dar es Salaam',
+                    state: 'Ilala',
+                    zip: '15111',
+                    isDefault: false
+                }
+            ];
+
+            const grid = document.getElementById('addressesGrid');
+            grid.innerHTML = addresses.map(addr => `
+                <div class="address-card ${addr.isDefault ? 'default' : ''}">
+                    ${addr.isDefault ? '<span class="address-badge">Default</span>' : ''}
+                    <span class="address-type"><i class="fas fa-${addr.type}"></i> ${addr.type}</span>
+                    <div class="address-text">
+                        ${addr.street}<br>
+                        ${addr.city}, ${addr.state} ${addr.zip}
+                    </div>
+                    <div class="address-actions">
+                        <button class="btn-icon" onclick="editAddress(${addr.id})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon" onclick="deleteAddress(${addr.id})"><i class="fas fa-trash"></i></button>
+                        ${!addr.isDefault ? `<button class="btn-icon" onclick="setDefaultAddress(${addr.id})"><i class="fas fa-check"></i></button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load payment methods (mock data)
+        function loadPaymentMethods() {
+            const methods = [
+                {
+                    id: 1,
+                    type: 'visa',
+                    last4: '4242',
+                    expiry: '12/25',
+                    name: 'John Doe',
+                    isDefault: true
+                },
+                {
+                    id: 2,
+                    type: 'mastercard',
+                    last4: '8888',
+                    expiry: '08/24',
+                    name: 'John Doe',
+                    isDefault: false
+                }
+            ];
+
+            const container = document.getElementById('paymentMethods');
+            container.innerHTML = methods.map(method => `
+                <div class="payment-card">
+                    <div class="payment-icon">
+                        <i class="fab fa-cc-${method.type}"></i>
+                    </div>
+                    <div class="payment-info">
+                        <h4>${method.type.charAt(0).toUpperCase() + method.type.slice(1)} ending in ${method.last4}</h4>
+                        <p>Expires ${method.expiry}</p>
+                    </div>
+                    ${method.isDefault ? '<span class="payment-default">Default</span>' : ''}
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn-icon" onclick="editPayment(${method.id})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon" onclick="deletePayment(${method.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load activity (mock data)
+        function loadActivity() {
+            const activities = [
+                {
+                    date: '2024-02-28',
+                    title: 'Booking Completed',
+                    description: 'Home cleaning service completed successfully'
+                },
+                {
+                    date: '2024-02-25',
+                    title: 'Review Posted',
+                    description: 'You left a 5-star review for Mary'
+                },
+                {
+                    date: '2024-02-20',
+                    title: 'Payment Added',
+                    description: 'Added new Visa card ending in 4242'
+                },
+                {
+                    date: '2024-02-15',
+                    title: 'Profile Updated',
+                    description: 'Updated your personal information'
+                }
+            ];
+
+            const timeline = document.getElementById('activityTimeline');
+            timeline.innerHTML = activities.map(act => `
+                <div class="activity-item">
+                    <div class="activity-date">${act.date}</div>
+                    <div class="activity-title">${act.title}</div>
+                    <div class="activity-desc">${act.description}</div>
+                </div>
+            `).join('');
+        }
+
+        // Load transactions (mock data)
+        function loadTransactions() {
+            const transactions = [
+                {
+                    date: '2024-02-28',
+                    desc: 'Home Cleaning Service',
+                    amount: 80.00
+                },
+                {
+                    date: '2024-02-20',
+                    desc: 'Office Sanitization',
+                    amount: 120.00
+                }
+            ];
+
+            const timeline = document.getElementById('recentTransactions');
+            timeline.innerHTML = transactions.map(t => `
+                <div class="activity-item">
+                    <div class="activity-date">${t.date}</div>
+                    <div class="activity-title">${t.desc}</div>
+                    <div class="activity-desc">Amount: $${t.amount}</div>
+                </div>
+            `).join('');
+        }
+
+        // Address modal functions
+        function addNewAddress() {
+            document.getElementById('addressModal').classList.add('active');
+        }
+
+        function closeAddressModal() {
+            document.getElementById('addressModal').classList.remove('active');
+        }
+
+        // Form submissions
+        document.getElementById('personalForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('Profile updated successfully!');
+        });
+
+        document.getElementById('securityForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('Security settings updated!');
+        });
+
+        document.getElementById('addressForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            closeAddressModal();
+            showNotification('Address added successfully!');
+        });
+
+        function resetPersonalForm() {
+            if (userData) {
+                document.getElementById('fullName').value = userData.fullName || '';
+                document.getElementById('phone').value = userData.phone || '';
+            }
+        }
+
+        function saveNotificationSettings() {
+            showNotification('Notification preferences saved!');
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            showNotification('Logged out successfully');
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 1500);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>

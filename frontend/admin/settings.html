@@ -1,0 +1,287 @@
+<!-- frontend/admin/settings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Copy navigation styles from dashboard.html */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        
+        .navbar { background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 1000; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: #27ae60; text-decoration: none; display: flex; align-items: center; gap: 0.3rem; }
+        .admin-badge { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 50px; margin-left: 0.5rem; }
+        .mobile-menu-btn { display: block; background: none; border: none; padding: 12px; cursor: pointer; min-width: 48px; min-height: 48px; }
+        .mobile-menu-btn span { display: block; width: 28px; height: 3px; background: #2c3e50; margin: 5px 0; transition: 0.3s; border-radius: 3px; }
+        .nav-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); list-style: none; }
+        .nav-menu.active { display: block; }
+        .nav-menu li { margin: 0.5rem 0; }
+        .nav-menu a { display: flex; align-items: center; gap: 1rem; padding: 1rem; color: #333; text-decoration: none; font-size: 1.1rem; border-radius: 8px; min-height: 48px; }
+        .nav-menu a:hover, .nav-menu a.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .logout-btn { background: #e74c3c; color: white !important; }
+
+        .container { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .page-header { color: white; margin-bottom: 1.5rem; }
+        .page-header h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .settings-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .settings-header i {
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .settings-header h3 {
+            color: #2c3e50;
+        }
+
+        .settings-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn { display: none; }
+            .nav-menu { display: flex !important; position: static; background: none; box-shadow: none; padding: 0; gap: 1rem; }
+            .container { padding: 2rem; }
+            .settings-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <i class="fas fa-broom"></i> Safi Shanasi
+                <span class="admin-badge">Admin</span>
+            </a>
+            <button class="mobile-menu-btn" id="menuToggle"><span></span><span></span><span></span></button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="cleaners.html"><i class="fas fa-user-tie"></i> Cleaners</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="bookings.html"><i class="fas fa-calendar-check"></i> Bookings</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-cog"></i> System Settings</h1>
+        </div>
+
+        <div class="settings-grid">
+            <!-- General Settings -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fas fa-globe"></i>
+                    <h3>General Settings</h3>
+                </div>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input type="text" value="Safi Shanasi">
+                    </div>
+                    <div class="form-group">
+                        <label>Site Description</label>
+                        <textarea rows="3">Professional Cleaning Service Platform</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" value="info@safishanasi.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Phone</label>
+                        <input type="tel" value="+255 123 456 789">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Settings -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Business Settings</h3>
+                </div>
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select>
+                            <option value="USD" selected>USD ($)</option>
+                            <option value="TZS">TZS (TSh)</option>
+                            <option value="KES">KES (KSh)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tax Rate (%)</label>
+                        <input type="number" value="18">
+                    </div>
+                    <div class="form-group">
+                        <label>Booking Fee (%)</label>
+                        <input type="number" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Booking Hours</label>
+                        <input type="number" value="2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Settings -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fas fa-credit-card"></i>
+                    <h3>Payment Settings</h3>
+                </div>
+                <div class="settings-form">
+                    <div class="checkbox-group">
+                        <input type="checkbox" checked>
+                        <label>Enable M-Pesa Payments</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" checked>
+                        <label>Enable Card Payments</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox">
+                        <label>Enable PayPal</label>
+                    </div>
+                    <div class="form-group">
+                        <label>M-Pesa Business Number</label>
+                        <input type="text" value="123456">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-card">
+                <div class="settings-header">
+                    <i class="fas fa-bell"></i>
+                    <h3>Notification Settings</h3>
+                </div>
+                <div class="settings-form">
+                    <div class="checkbox-group">
+                        <input type="checkbox" checked>
+                        <label>Send Email Notifications</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" checked>
+                        <label>Send SMS Notifications</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" checked>
+                        <label>Notify admin on new cleaner</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Admin Email</label>
+                        <input type="email" value="admin@safishanasi.com">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-save"><i class="fas fa-save"></i> Save All Settings</button>
+    </div>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        document.querySelector('.btn-save').addEventListener('click', () => {
+            alert('Settings saved successfully!');
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = '../login.html';
+        });
+    </script>
+</body>
+</html>

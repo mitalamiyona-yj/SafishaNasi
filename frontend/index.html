@@ -1,0 +1,1294 @@
+<!-- frontend/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safi Shanasi - Professional Cleaning Services</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu a i {
+            font-size: 1rem;
+        }
+
+        .nav-menu a:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a.active {
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            color: white;
+        }
+
+        .nav-menu a.active i {
+            color: white;
+        }
+
+        .btn-login {
+            border: 2px solid #27ae60;
+            color: #27ae60 !important;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            color: white !important;
+        }
+
+        .btn-register:hover {
+            background: linear-gradient(135deg, #2c3e50, #27ae60);
+        }
+
+        /* 🔥 NEW: Dashboard Dropdown Styles (Haibadilishi design) */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            list-style: none;
+            z-index: 1000;
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            padding: 0.8rem 1rem;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f0f0f0;
+            color: #27ae60;
+        }
+
+        .btn-logout {
+            background: #e74c3c;
+            color: white !important;
+        }
+
+        .btn-logout:hover {
+            background: #c0392b !important;
+        }
+
+        /* Mobile responsive for dropdown */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                padding-left: 1rem;
+                background: transparent;
+            }
+            
+            .dropdown-menu a {
+                color: #2c3e50;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #2c3e50;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section - HAKUJA BADILISHA */
+        .hero {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            color: white;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #27ae60, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 i {
+            margin-right: 0.5rem;
+            background: linear-gradient(135deg, #27ae60, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease backwards;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #27ae60, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Services Preview */
+        .services-preview {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease backwards;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, #27ae60, #2c3e50);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 0;
+            transform: rotate(45deg);
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-price small {
+            font-size: 0.9rem;
+            color: #999;
+            font-weight: normal;
+        }
+
+        .service-duration {
+            color: #999;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-duration i {
+            margin-right: 0.3rem;
+            color: #667eea;
+        }
+
+        .btn-service {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-service:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .step-card h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .step-card p {
+            color: #666;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 0 2rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .testimonial-info h4 {
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .testimonial-info .rating {
+            color: #f1c40f;
+        }
+
+        .testimonial-text {
+            color: #666;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .testimonial-text i {
+            color: #667eea;
+            margin-right: 0.3rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            max-width: 1200px;
+            margin: 6rem auto;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-cta-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-section h3 i {
+            color: #27ae60;
+        }
+
+        .footer-section p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .footer-links a i {
+            font-size: 0.8rem;
+            color: #27ae60;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .contact-info li i {
+            color: #27ae60;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding: 2rem 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                width: 100%;
+            }
+
+            .nav-menu a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-broom"></i>
+                Safi Shanasi
+            </a>
+            
+            <button class="mobile-menu-btn" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="services.html"><i class="fas fa-concierge-bell"></i> Services</a></li>
+                <li><a href="#how-it-works"><i class="fas fa-question-circle"></i> How It Works</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                
+                <!-- 🔥 NEW: Dashboard Dropdown (Itaonekana baada ya login) -->
+                <li class="nav-dropdown" id="dashboardMenu" style="display: none;">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="customer/dashboard.html"><i class="fas fa-user"></i> Customer Dashboard</a></li>
+                        <li><a href="cleaner/dashboard.html"><i class="fas fa-user-tie"></i> Cleaner Dashboard</a></li>
+                        <li><a href="admin/dashboard.html"><i class="fas fa-user-cog"></i> Admin Dashboard</a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="login.html" class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="register.html" class="btn-register" id="registerBtn"><i class="fas fa-user-plus"></i> Register</a></li>
+                <li style="display: none;" id="logoutLi"><a href="#" id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section (HAKUNA BADILIKA) -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                Professional Cleaning <br>
+                <span>At Your Fingertips</span>
+            </h1>
+            <p><i class="fas fa-check-circle"></i> Book trusted cleaners for your home, office, or school with just a few clicks</p>
+            
+            <div class="hero-buttons">
+                <a href="register.html?role=customer" class="btn btn-primary">
+                    <i class="fas fa-calendar-plus"></i> Book a Cleaner
+                </a>
+                <a href="register.html?role=cleaner" class="btn btn-secondary">
+                    <i class="fas fa-user-tie"></i> Become a Cleaner
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label"><i class="fas fa-users"></i> Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label"><i class="fas fa-user-check"></i> Verified Cleaners</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label"><i class="fas fa-calendar-check"></i> Bookings Done</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cleaning Service">
+        </div>
+    </section>
+
+    <!-- Features Section (HAKUNA BADILIKA) -->
+    <section class="features">
+        <div class="section-header">
+            <h2><i class="fas fa-star"></i> Why Choose Us</h2>
+            <p>We provide the best cleaning service experience</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" style="animation-delay: 0.1s;">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Verified Professionals</h3>
+                <p>All cleaners are background checked and verified</p>
+            </div>
+            <div class="feature-card" style="animation-delay: 0.2s;">
+                <i class="fas fa-clock"></i>
+                <h3>24/7 Availability</h3>
+                <p>Book anytime, day or night</p>
+            </div>
+            <div class="feature-card" style="animation-delay: 0.3s;">
+                <i class="fas fa-credit-card"></i>
+                <h3>Secure Payments</h3>
+                <p>Multiple payment options with 100% security</p>
+            </div>
+            <div class="feature-card" style="animation-delay: 0.4s;">
+                <i class="fas fa-star"></i>
+                <h3>Satisfaction Guaranteed</h3>
+                <p>100% money-back guarantee if not satisfied</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Preview (HAKUNA BADILIKA) -->
+    <section class="services-preview">
+        <div class="section-header">
+            <h2><i class="fas fa-concierge-bell"></i> Our Popular Services</h2>
+            <p>Choose from our wide range of professional cleaning services</p>
+        </div>
+
+        <div class="services-grid" id="servicesPreview">
+            <!-- Services will be loaded dynamically -->
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="services.html" class="btn btn-primary">
+                <i class="fas fa-eye"></i> View All Services
+            </a>
+        </div>
+    </section>
+
+    <!-- How It Works (HAKUNA BADILIKA) -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="section-header">
+            <h2><i class="fas fa-magic"></i> How It Works</h2>
+            <p>Get your space cleaned in 4 simple steps</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <i class="fas fa-user-plus"></i>
+                <h3>Sign Up</h3>
+                <p>Create your account as a customer or cleaner</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <i class="fas fa-calendar-plus"></i>
+                <h3>Choose Service</h3>
+                <p>Select the cleaning service you need</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <i class="fas fa-clock"></i>
+                <h3>Schedule</h3>
+                <p>Pick a date and time that works for you</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <i class="fas fa-broom"></i>
+                <h3>Get Cleaned</h3>
+                <p>Relax while our professionals do the work</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials (HAKUNA BADILIKA) -->
+    <section class="testimonials">
+        <div class="section-header">
+            <h2><i class="fas fa-comments"></i> What Our Customers Say</h2>
+            <p>Don't just take our word for it</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>John M.</h4>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Amazing service! The cleaner was professional and did an excellent job. Highly recommended!
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>Sarah K.</h4>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Very easy to book and the cleaner arrived on time. My office has never been cleaner!
+                </p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="testimonial-info">
+                        <h4>David R.</h4>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    <i class="fas fa-quote-left"></i>
+                    Great platform! Found a reliable cleaner for my home. Will definitely use again.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section (HAKUNA BADILIKA) -->
+    <section class="cta-section">
+        <h2><i class="fas fa-rocket"></i> Ready to Get Started?</h2>
+        <p>Join thousands of satisfied customers and verified cleaners</p>
+        <div class="cta-buttons">
+            <a href="register.html?role=customer" class="btn-cta btn-cta-primary">
+                <i class="fas fa-user-plus"></i> Sign Up as Customer
+            </a>
+            <a href="register.html?role=cleaner" class="btn-cta btn-cta-secondary">
+                <i class="fas fa-user-tie"></i> Become a Cleaner
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer (HAKUNA BADILIKA) -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-broom"></i> Safi Shanasi</h3>
+                <p>Your trusted partner for professional cleaning services. We connect verified cleaners with customers for a spotless experience.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="services.html"><i class="fas fa-chevron-right"></i> Services</a></li>
+                    <li><a href="#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+                    <li><a href="login.html"><i class="fas fa-chevron-right"></i> Login</a></li>
+                    <li><a href="register.html"><i class="fas fa-chevron-right"></i> Register</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-headset"></i> Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contact Info</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-map-marker-alt"></i> Dar es Salaam, Tanzania</li>
+                    <li><i class="fas fa-phone"></i> +255 123 456 789</li>
+                    <li><i class="fas fa-envelope"></i> info@safishanasi.com</li>
+                    <li><i class="fas fa-clock"></i> Mon - Sun: 24/7</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Safi Shanasi. All rights reserved. | <i class="fas fa-heart" style="color: #e74c3c;"></i> Made with love in Tanzania</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        // 🔥 NEW: Update navigation based on login status
+        function updateNavigation() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            const dashboardMenu = document.getElementById('dashboardMenu');
+            const loginBtn = document.getElementById('loginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const logoutLi = document.getElementById('logoutLi');
+            
+            if (token && userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    
+                    // Show dashboard menu
+                    dashboardMenu.style.display = 'block';
+                    
+                    // Hide login/register
+                    loginBtn.parentElement.style.display = 'none';
+                    registerBtn.parentElement.style.display = 'none';
+                    logoutLi.style.display = 'block';
+                    
+                    // Highlight correct dashboard based on role
+                    document.querySelectorAll('.dropdown-menu a').forEach(link => {
+                        if (link.getAttribute('href').includes(user.role)) {
+                            link.style.background = '#f0f0f0';
+                            link.style.fontWeight = 'bold';
+                        }
+                    });
+                    
+                } catch (e) {
+                    console.error('Error parsing user:', e);
+                }
+            } else {
+                dashboardMenu.style.display = 'none';
+                loginBtn.parentElement.style.display = 'block';
+                registerBtn.parentElement.style.display = 'block';
+                logoutLi.style.display = 'none';
+            }
+        }
+
+        // Logout function
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            updateNavigation();
+            window.location.href = 'index.html';
+        });
+
+        // Load services preview
+        async function loadServicesPreview() {
+            try {
+                const response = await fetch(`${API_URL}/services`);
+                const services = await response.json();
+
+                const preview = document.getElementById('servicesPreview');
+                
+                if (services.length === 0) {
+                    preview.innerHTML = '<p style="color: white; text-align: center;">No services available</p>';
+                    return;
+                }
+
+                // Show first 3 services
+                const previewServices = services.slice(0, 3);
+                
+                const icons = ['fa-broom', 'fa-building', 'fa-school', 'fa-spray-can'];
+
+                preview.innerHTML = previewServices.map((service, index) => `
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas ${icons[index % icons.length]}"></i>
+                        </div>
+                        <h3>${service.name}</h3>
+                        <p>${service.description || 'Professional cleaning service'}</p>
+                        <div class="service-price">
+                            $${service.basePrice} <small>/${service.priceUnit || 'session'}</small>
+                        </div>
+                        <div class="service-duration">
+                            <i class="fas fa-clock"></i> ${service.estimatedDuration || 2} hours
+                        </div>
+                        <button class="btn-service" onclick="bookService(${service.id})">
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading services:', error);
+            }
+        }
+
+        // Book service function
+        function bookService(serviceId) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = `login.html?redirect=booking.html&service=${serviceId}`;
+            } else {
+                window.location.href = `booking.html?service=${serviceId}`;
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServicesPreview();
+            updateNavigation(); // 🔥 Check login status on page load
+        });
+    </script>
+</body>
+</html>

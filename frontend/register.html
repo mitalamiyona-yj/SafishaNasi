@@ -1,0 +1,445 @@
+<!-- frontend/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Safi Shanasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-home {
+            margin-bottom: 1.5rem;
+        }
+
+        .back-home a {
+            color: #667eea;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .back-home a:hover {
+            transform: translateX(-5px);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo h2 {
+            margin-top: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: #f0f0f0;
+            padding: 0.3rem;
+            border-radius: 50px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .role-tab i {
+            font-size: 1rem;
+        }
+
+        .role-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-register:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-register:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #e74c3c;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .links a {
+            color: #666;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            color: #667eea;
+        }
+
+        .role-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .role-info p {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .role-info small {
+            display: block;
+            color: #666;
+            margin: 0.3rem 0;
+        }
+
+        .role-info i {
+            color: #667eea;
+            width: 20px;
+        }
+
+        .connection-status {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .connection-status.online {
+            color: #27ae60;
+        }
+
+        .connection-status.offline {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="back-home">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+
+        <div class="logo">
+            <i class="fas fa-broom"></i>
+            <h2>Create Account</h2>
+        </div>
+
+        <!-- Role Tabs -->
+        <div class="role-tabs">
+            <div class="role-tab" onclick="selectRole('customer')">
+                <i class="fas fa-user"></i> Customer
+            </div>
+            <div class="role-tab active" onclick="selectRole('cleaner')">
+                <i class="fas fa-user-tie"></i> Cleaner
+            </div>
+            <div class="role-tab" onclick="selectRole('admin')">
+                <i class="fas fa-user-cog"></i> Admin
+            </div>
+        </div>
+
+        <div id="errorDisplay" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <form id="registerForm">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="fullName" placeholder="Full Name" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email address" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="phone" placeholder="Phone Number (optional)">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password (min. 6 characters)" minlength="6" required>
+            </div>
+
+            <input type="hidden" id="role" value="cleaner">
+
+            <button type="submit" class="btn-register" id="registerBtn">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+        </form>
+
+        <div class="links">
+            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Already have an account? Login</a>
+        </div>
+
+        <div class="role-info">
+            <p><i class="fas fa-info-circle"></i> Role Information:</p>
+            <small><i class="fas fa-user"></i> Customer: Book cleaning services</small>
+            <small><i class="fas fa-user-tie"></i> Cleaner: Offer cleaning services (requires admin approval)</small>
+            <small><i class="fas fa-user-cog"></i> Admin: Manage platform (by invitation only)</small>
+        </div>
+
+        <div id="connectionStatus" class="connection-status offline">
+            <i class="fas fa-circle"></i> Checking connection...
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+
+        // Select role
+        function selectRole(role) {
+            document.getElementById('role').value = role;
+            document.querySelectorAll('.role-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Check backend connection
+        async function checkBackendConnection() {
+            const statusDiv = document.getElementById('connectionStatus');
+            try {
+                const response = await fetch('http://localhost:5000/', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = '<i class="fas fa-circle"></i> ✅ Backend Connected';
+                    statusDiv.className = 'connection-status online';
+                    return true;
+                } else {
+                    throw new Error('Backend not responding');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<i class="fas fa-circle"></i> ❌ Backend Offline - Start XAMPP and Node server';
+                statusDiv.className = 'connection-status offline';
+                return false;
+            }
+        }
+
+        // Get role from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const roleParam = urlParams.get('role');
+        if (roleParam) {
+            selectRole(roleParam);
+        }
+
+        // Register form submit
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+            const registerBtn = document.getElementById('registerBtn');
+            const errorDisplay = document.getElementById('errorDisplay');
+            const errorText = document.getElementById('errorText');
+
+            // Validation
+            if (!fullName || !email || !password) {
+                errorDisplay.style.display = 'flex';
+                errorText.textContent = 'Please fill all required fields';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDisplay.style.display = 'flex';
+                errorText.textContent = 'Password must be at least 6 characters';
+                return;
+            }
+
+            // Disable button
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+
+            try {
+                console.log('📡 Registering:', { fullName, email, role });
+                
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ fullName, email, phone, password, role })
+                });
+
+                const data = await response.json();
+                console.log('📡 Response:', data);
+
+                if (!response.ok) {
+                    throw new Error(data.msg || 'Registration failed');
+                }
+
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                errorDisplay.style.display = 'none';
+                
+                alert('✅ Registration successful!');
+                
+                // Redirect based on role
+                if (role === 'admin') {
+                    window.location.href = 'admin/dashboard.html';
+                } else if (role === 'cleaner') {
+                    window.location.href = 'cleaner/dashboard.html';
+                } else {
+                    window.location.href = 'customer/dashboard.html';
+                }
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                if (error.message === 'Failed to fetch') {
+                    errorDisplay.style.display = 'flex';
+                    errorText.innerHTML = 'Cannot connect to server. Make sure backend is running!';
+                } else {
+                    errorDisplay.style.display = 'flex';
+                    errorText.textContent = error.message;
+                }
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkBackendConnection();
+        });
+
+        setInterval(checkBackendConnection, 10000);
+    </script>
+</body>
+</html>
