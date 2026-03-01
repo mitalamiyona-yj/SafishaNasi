@@ -22,7 +22,7 @@ Users can request services such as home cleaning, office cleaning, and school cl
 
 1. Clone the repository
 
-git clone https://github.com/YOUR-USERNAME/SafishaNasi.git
+git clone https://github.com/mitalamiyona-yj/SafishaNasi.git
 
 2. Go to project folder
 
@@ -50,3 +50,6 @@ script.js
 
 ## Author
 YONA MITALAMI
+
+## Live Demo
+ https://mitalamiyona-yj.github.io/SafishaNasi/
